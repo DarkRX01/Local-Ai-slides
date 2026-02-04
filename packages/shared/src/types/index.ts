@@ -4,6 +4,7 @@ export interface Presentation {
   description?: string
   slides: Slide[]
   theme: Theme
+  settings?: Record<string, any>
   createdAt: string
   updatedAt: string
 }
@@ -13,7 +14,8 @@ export interface Slide {
   presentationId: string
   order: number
   elements: SlideElement[]
-  background?: Background
+  animations: Animation[]
+  background: Background
   transition?: Transition
   notes?: string
 }

@@ -1,75 +1,65 @@
 import { db } from '../utils/database';
-import { nanoid } from 'nanoid';
-import type { CacheEntry } from '@presentation-app/shared';
+import { v4 as uuidv4 } from 'uuid';
+
+export interface CacheEntry {
+  id: string;
+  key: string;
+  value: string;
+  type: string;
+  createdAt: string;
+  expiresAt?: string;
+}
 
 export class CacheModel {
-  static set(key: string, value: string, type: CacheEntry['type'], expiresInMs?: number): CacheEntry {
-    const id = nanoid();
+  static get(key: string, type: string): string | null {
     const now = new Date().toISOString();
-    const expiresAt = expiresInMs ? new Date(Date.now() + expiresInMs).toISOString() : null;
-
-    const deleteStmt = db.prepare('DELETE FROM cache WHERE key = ?');
-    deleteStmt.run(key);
-
-    const insertStmt = db.prepare(`
-      INSERT INTO cache (id, key, value, type, created_at, expires_at)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `);
-
-    insertStmt.run(id, key, value, type, now, expiresAt);
-
-    return {
-      id,
-      key,
-      value,
-      type,
-      createdAt: now,
-      expiresAt: expiresAt || undefined
-    };
-  }
-
-  static get(key: string): CacheEntry | null {
-    const stmt = db.prepare('SELECT * FROM cache WHERE key = ?');
-    const row = stmt.get(key) as any;
-
+    
+    db.prepare('DELETE FROM cache WHERE expires_at IS NOT NULL AND expires_at < ?').run(now);
+    
+    const row = db.prepare('SELECT * FROM cache WHERE key = ? AND type = ?').get(key, type) as any;
+    
     if (!row) return null;
-
-    if (row.expires_at && new Date(row.expires_at) < new Date()) {
-      this.delete(key);
+    
+    if (row.expires_at && row.expires_at < now) {
+      db.prepare('DELETE FROM cache WHERE id = ?').run(row.id);
       return null;
     }
-
-    return {
-      id: row.id,
-      key: row.key,
-      value: row.value,
-      type: row.type,
-      createdAt: row.created_at,
-      expiresAt: row.expires_at
-    };
+    
+    return row.value;
   }
 
-  static delete(key: string): boolean {
-    const stmt = db.prepare('DELETE FROM cache WHERE key = ?');
-    const result = stmt.run(key);
+  static set(key: string, value: string, type: string, ttl?: number): void {
+    const id = uuidv4();
+    const now = new Date().toISOString();
+    const expiresAt = ttl ? new Date(Date.now() + ttl).toISOString() : null;
+
+    const existing = db.prepare('SELECT id FROM cache WHERE key = ? AND type = ?').get(key, type) as any;
+    
+    if (existing) {
+      db.prepare('UPDATE cache SET value = ?, expires_at = ? WHERE id = ?').run(value, expiresAt, existing.id);
+    } else {
+      db.prepare(`
+        INSERT INTO cache (id, key, value, type, created_at, expires_at)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `).run(id, key, value, type, now, expiresAt);
+    }
+  }
+
+  static delete(key: string, type: string): boolean {
+    const result = db.prepare('DELETE FROM cache WHERE key = ? AND type = ?').run(key, type);
     return result.changes > 0;
   }
 
-  static clearExpired(): number {
-    const stmt = db.prepare('DELETE FROM cache WHERE expires_at IS NOT NULL AND expires_at < ?');
-    const result = stmt.run(new Date().toISOString());
-    return result.changes;
+  static clear(type?: string): void {
+    if (type) {
+      db.prepare('DELETE FROM cache WHERE type = ?').run(type);
+    } else {
+      db.prepare('DELETE FROM cache').run();
+    }
   }
 
-  static clearByType(type: CacheEntry['type']): number {
-    const stmt = db.prepare('DELETE FROM cache WHERE type = ?');
-    const result = stmt.run(type);
-    return result.changes;
-  }
-
-  static clearAll(): number {
-    const stmt = db.prepare('DELETE FROM cache');
-    const result = stmt.run();
-    return result.changes;
+  static cleanExpired(): void {
+    const now = new Date().toISOString();
+    db.prepare('DELETE FROM cache WHERE expires_at IS NOT NULL AND expires_at < ?').run(now);
   }
 }

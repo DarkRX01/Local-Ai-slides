@@ -1,169 +1,123 @@
 import { db } from '../utils/database';
-import { nanoid } from 'nanoid';
-import type { Presentation, CreatePresentationDto, UpdatePresentationDto, Theme, PresentationSettings } from '@presentation-app/shared';
-
-const DEFAULT_THEME: Theme = {
-  id: 'default',
-  name: 'Default',
-  colors: {
-    primary: '#3b82f6',
-    secondary: '#8b5cf6',
-    accent: '#ec4899',
-    background: '#ffffff',
-    text: '#1f2937'
-  },
-  fonts: {
-    heading: 'Inter',
-    body: 'Inter'
-  },
-  mode: 'light'
-};
-
-const DEFAULT_SETTINGS: PresentationSettings = {
-  slideSize: { width: 1920, height: 1080 },
-  aspectRatio: '16:9',
-  autoSave: true,
-  autoSaveInterval: 30000
-};
+import type { Presentation } from '@slides-clone/shared';
 
 export class PresentationModel {
-  static create(data: CreatePresentationDto): Presentation {
-    const id = nanoid();
-    const now = new Date().toISOString();
-    const theme = { ...DEFAULT_THEME, ...data.theme };
-    const settings = { ...DEFAULT_SETTINGS, ...data.settings };
-
-    const stmt = db.prepare(`
-      INSERT INTO presentations (id, title, description, theme, settings, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `);
-
-    stmt.run(
-      id,
-      data.title,
-      data.description || null,
-      JSON.stringify(theme),
-      JSON.stringify(settings),
-      now,
-      now
-    );
-
-    return {
-      id,
-      title: data.title,
-      description: data.description,
-      theme,
+  static getAll(): Presentation[] {
+    const rows = db.prepare('SELECT * FROM presentations ORDER BY updated_at DESC').all();
+    return rows.map((row: any) => ({
+      id: row.id,
+      title: row.title,
+      description: row.description || undefined,
+      theme: JSON.parse(row.theme),
+      settings: JSON.parse(row.settings),
       slides: [],
-      settings,
-      createdAt: now,
-      updatedAt: now
-    };
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+    }));
   }
 
-  static findById(id: string): Presentation | null {
-    const stmt = db.prepare('SELECT * FROM presentations WHERE id = ?');
-    const row = stmt.get(id) as any;
-
+  static getById(id: string): Presentation | null {
+    const row = db.prepare('SELECT * FROM presentations WHERE id = ?').get(id) as any;
     if (!row) return null;
 
-    const slidesStmt = db.prepare('SELECT * FROM slides WHERE presentation_id = ? ORDER BY order_index ASC');
-    const slideRows = slidesStmt.all(id) as any[];
+    const slides = db.prepare('SELECT * FROM slides WHERE presentation_id = ? ORDER BY order_index ASC').all(id);
 
     return {
       id: row.id,
       title: row.title,
-      description: row.description,
+      description: row.description || undefined,
       theme: JSON.parse(row.theme),
-      slides: slideRows.map(slideRow => ({
-        id: slideRow.id,
-        presentationId: slideRow.presentation_id,
-        order: slideRow.order_index,
-        elements: JSON.parse(slideRow.elements),
-        animations: JSON.parse(slideRow.animations),
-        background: JSON.parse(slideRow.background),
-        notes: slideRow.notes
-      })),
       settings: JSON.parse(row.settings),
+      slides: slides.map((slide: any) => ({
+        id: slide.id,
+        presentationId: slide.presentation_id,
+        order: slide.order_index,
+        elements: JSON.parse(slide.elements),
+        animations: JSON.parse(slide.animations),
+        background: JSON.parse(slide.background),
+        notes: slide.notes || undefined,
+      })),
       createdAt: row.created_at,
-      updatedAt: row.updated_at
+      updatedAt: row.updated_at,
     };
   }
 
-  static findAll(): Presentation[] {
-    const stmt = db.prepare('SELECT * FROM presentations ORDER BY updated_at DESC');
-    const rows = stmt.all() as any[];
+  static create(presentation: Omit<Presentation, 'createdAt' | 'updatedAt'>): Presentation {
+    const now = new Date().toISOString();
+    
+    db.prepare(`
+      INSERT INTO presentations (id, title, description, theme, settings, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      presentation.id,
+      presentation.title,
+      presentation.description || null,
+      JSON.stringify(presentation.theme),
+      JSON.stringify(presentation.settings || {}),
+      now,
+      now
+    );
 
-    return rows.map(row => {
-      const slidesStmt = db.prepare('SELECT * FROM slides WHERE presentation_id = ? ORDER BY order_index ASC');
-      const slideRows = slidesStmt.all(row.id) as any[];
+    for (const slide of presentation.slides) {
+      db.prepare(`
+        INSERT INTO slides (id, presentation_id, order_index, elements, animations, background, notes)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `).run(
+        slide.id,
+        presentation.id,
+        slide.order,
+        JSON.stringify(slide.elements),
+        JSON.stringify(slide.animations),
+        JSON.stringify(slide.background),
+        slide.notes || null
+      );
+    }
 
-      return {
-        id: row.id,
-        title: row.title,
-        description: row.description,
-        theme: JSON.parse(row.theme),
-        slides: slideRows.map(slideRow => ({
-          id: slideRow.id,
-          presentationId: slideRow.presentation_id,
-          order: slideRow.order_index,
-          elements: JSON.parse(slideRow.elements),
-          animations: JSON.parse(slideRow.animations),
-          background: JSON.parse(slideRow.background),
-          notes: slideRow.notes
-        })),
-        settings: JSON.parse(row.settings),
-        createdAt: row.created_at,
-        updatedAt: row.updated_at
-      };
-    });
+    return {
+      ...presentation,
+      createdAt: now,
+      updatedAt: now,
+    };
   }
 
-  static update(id: string, data: UpdatePresentationDto): Presentation | null {
-    const existing = this.findById(id);
+  static update(id: string, updates: Partial<Presentation>): Presentation | null {
+    const existing = this.getById(id);
     if (!existing) return null;
 
-    const updates: string[] = [];
+    const now = new Date().toISOString();
+    const fields: string[] = [];
     const values: any[] = [];
 
-    if (data.title !== undefined) {
-      updates.push('title = ?');
-      values.push(data.title);
+    if (updates.title !== undefined) {
+      fields.push('title = ?');
+      values.push(updates.title);
+    }
+    if (updates.description !== undefined) {
+      fields.push('description = ?');
+      values.push(updates.description);
+    }
+    if (updates.theme !== undefined) {
+      fields.push('theme = ?');
+      values.push(JSON.stringify(updates.theme));
+    }
+    if (updates.settings !== undefined) {
+      fields.push('settings = ?');
+      values.push(JSON.stringify(updates.settings));
     }
 
-    if (data.description !== undefined) {
-      updates.push('description = ?');
-      values.push(data.description);
-    }
-
-    if (data.theme !== undefined) {
-      updates.push('theme = ?');
-      values.push(JSON.stringify({ ...existing.theme, ...data.theme }));
-    }
-
-    if (data.settings !== undefined) {
-      updates.push('settings = ?');
-      values.push(JSON.stringify({ ...existing.settings, ...data.settings }));
-    }
-
-    updates.push('updated_at = ?');
-    values.push(new Date().toISOString());
-
+    fields.push('updated_at = ?');
+    values.push(now);
     values.push(id);
 
-    const stmt = db.prepare(`
-      UPDATE presentations
-      SET ${updates.join(', ')}
-      WHERE id = ?
-    `);
+    if (fields.length > 0) {
+      db.prepare(`UPDATE presentations SET ${fields.join(', ')} WHERE id = ?`).run(...values);
+    }
 
-    stmt.run(...values);
-
-    return this.findById(id);
+    return this.getById(id);
   }
 
   static delete(id: string): boolean {
-    const stmt = db.prepare('DELETE FROM presentations WHERE id = ?');
-    const result = stmt.run(id);
+    const result = db.prepare('DELETE FROM presentations WHERE id = ?').run(id);
     return result.changes > 0;
   }
 }
