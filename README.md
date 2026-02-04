@@ -1,6 +1,20 @@
-# Presentation App
+# 🎯 Slides Clone - AI-Powered Presentation App
+
+> **For End Users**: Want to install and start using the app? See [**🪟 Windows Install Guide**](WINDOWS_INSTALL.md) for super simple 3-step installation!
 
 A fully local, AI-powered presentation builder that runs entirely on your machine. Create stunning presentations with AI assistance, advanced animations, multi-language support, and image generation.
+
+## 🚀 Quick Start
+
+### Windows Users (Easiest)
+1. **Download** the latest `.exe` from [Releases](https://github.com/YOUR_USERNAME/slides-clone/releases)
+2. **Double-click** to install
+3. **Done!** App launches automatically
+
+👉 **[Full Windows Install Guide](WINDOWS_INSTALL.md)**
+
+### Developers
+See the [Development Setup](#development) section below.
 
 ## Features
 

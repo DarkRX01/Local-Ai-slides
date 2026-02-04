@@ -846,6 +846,52 @@ npm run build:electron
 **Pros:** Native feel, no browser required
 **Cons:** Larger package size (~200MB)
 
+#### Windows .exe Installer
+
+**electron-builder Configuration:**
+```json
+{
+  "build": {
+    "appId": "com.presentationapp.app",
+    "productName": "PresentationApp",
+    "win": {
+      "target": ["nsis", "portable"],
+      "icon": "build/icon.ico",
+      "publisherName": "PresentationApp"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "PresentationApp",
+      "include": "build/installer.nsh",
+      "installerIcon": "build/installer.ico",
+      "uninstallerIcon": "build/uninstaller.ico"
+    }
+  }
+}
+```
+
+**Build Commands:**
+```bash
+# Windows installer (.exe)
+npm run build:win
+
+# Portable version (no installation required)
+npm run build:win:portable
+```
+
+**Installer Features:**
+- One-click installation (no configuration needed)
+- Auto-installs to Program Files
+- Desktop shortcut created automatically
+- Start Menu integration
+- Automatic updates support
+- Clean uninstallation
+- ~250MB total size (includes all dependencies)
+
 ### 12.3 Docker Container
 
 **Dockerfile:**
