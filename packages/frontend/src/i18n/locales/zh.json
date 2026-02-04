@@ -1,0 +1,72 @@
+{
+  "app": {
+    "title": "演示文稿应用",
+    "tagline": "使用人工智能创建令人惊叹的演示文稿"
+  },
+  "menu": {
+    "file": "文件",
+    "edit": "编辑",
+    "view": "查看",
+    "insert": "插入",
+    "tools": "工具",
+    "help": "帮助"
+  },
+  "toolbar": {
+    "select": "选择",
+    "text": "文本",
+    "image": "图片",
+    "shape": "形状",
+    "draw": "绘制"
+  },
+  "editor": {
+    "undo": "撤销",
+    "redo": "重做",
+    "copy": "复制",
+    "paste": "粘贴",
+    "delete": "删除",
+    "duplicate": "复制",
+    "zoom": "缩放",
+    "grid": "网格",
+    "guides": "参考线",
+    "snap": "对齐网格"
+  },
+  "slide": {
+    "new": "新建幻灯片",
+    "duplicate": "复制幻灯片",
+    "delete": "删除幻灯片",
+    "reorder": "重新排序幻灯片"
+  },
+  "ai": {
+    "generate": "生成演示文稿",
+    "enhance": "增强内容",
+    "suggest": "建议动画",
+    "prompt": "描述您的演示文稿..."
+  },
+  "export": {
+    "title": "导出演示文稿",
+    "pdf": "导出为 PDF",
+    "pptx": "导出为 PowerPoint",
+    "html": "导出为 HTML",
+    "video": "导出为视频"
+  },
+  "settings": {
+    "title": "设置",
+    "language": "语言",
+    "theme": "主题",
+    "darkMode": "深色模式",
+    "autoSave": "自动保存",
+    "gridSize": "网格大小",
+    "aiModel": "AI 模型"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "取消",
+    "close": "关闭",
+    "ok": "确定",
+    "yes": "是",
+    "no": "否",
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功"
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "app": {
+    "title": "Application de Présentation",
+    "tagline": "Créez des présentations époustouflantes avec l'IA"
+  },
+  "menu": {
+    "file": "Fichier",
+    "edit": "Éditer",
+    "view": "Affichage",
+    "insert": "Insérer",
+    "tools": "Outils",
+    "help": "Aide"
+  },
+  "toolbar": {
+    "select": "Sélectionner",
+    "text": "Texte",
+    "image": "Image",
+    "shape": "Forme",
+    "draw": "Dessiner"
+  },
+  "editor": {
+    "undo": "Annuler",
+    "redo": "Rétablir",
+    "copy": "Copier",
+    "paste": "Coller",
+    "delete": "Supprimer",
+    "duplicate": "Dupliquer",
+    "zoom": "Zoom",
+    "grid": "Grille",
+    "guides": "Guides",
+    "snap": "Aligner sur la grille"
+  },
+  "slide": {
+    "new": "Nouvelle diapositive",
+    "duplicate": "Dupliquer la diapositive",
+    "delete": "Supprimer la diapositive",
+    "reorder": "Réorganiser les diapositives"
+  },
+  "ai": {
+    "generate": "Générer une présentation",
+    "enhance": "Améliorer le contenu",
+    "suggest": "Suggérer des animations",
+    "prompt": "Décrivez votre présentation..."
+  },
+  "export": {
+    "title": "Exporter la présentation",
+    "pdf": "Exporter en PDF",
+    "pptx": "Exporter en PowerPoint",
+    "html": "Exporter en HTML",
+    "video": "Exporter en vidéo"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "language": "Langue",
+    "theme": "Thème",
+    "darkMode": "Mode sombre",
+    "autoSave": "Sauvegarde automatique",
+    "gridSize": "Taille de la grille",
+    "aiModel": "Modèle d'IA"
+  },
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "ok": "OK",
+    "yes": "Oui",
+    "no": "Non",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès"
+  }
+}

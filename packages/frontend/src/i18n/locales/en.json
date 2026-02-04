@@ -1,0 +1,72 @@
+{
+  "app": {
+    "title": "Presentation App",
+    "tagline": "Create stunning presentations with AI"
+  },
+  "menu": {
+    "file": "File",
+    "edit": "Edit",
+    "view": "View",
+    "insert": "Insert",
+    "tools": "Tools",
+    "help": "Help"
+  },
+  "toolbar": {
+    "select": "Select",
+    "text": "Text",
+    "image": "Image",
+    "shape": "Shape",
+    "draw": "Draw"
+  },
+  "editor": {
+    "undo": "Undo",
+    "redo": "Redo",
+    "copy": "Copy",
+    "paste": "Paste",
+    "delete": "Delete",
+    "duplicate": "Duplicate",
+    "zoom": "Zoom",
+    "grid": "Grid",
+    "guides": "Guides",
+    "snap": "Snap to Grid"
+  },
+  "slide": {
+    "new": "New Slide",
+    "duplicate": "Duplicate Slide",
+    "delete": "Delete Slide",
+    "reorder": "Reorder Slides"
+  },
+  "ai": {
+    "generate": "Generate Presentation",
+    "enhance": "Enhance Content",
+    "suggest": "Suggest Animations",
+    "prompt": "Describe your presentation..."
+  },
+  "export": {
+    "title": "Export Presentation",
+    "pdf": "Export as PDF",
+    "pptx": "Export as PowerPoint",
+    "html": "Export as HTML",
+    "video": "Export as Video"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "darkMode": "Dark Mode",
+    "autoSave": "Auto Save",
+    "gridSize": "Grid Size",
+    "aiModel": "AI Model"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "ok": "OK",
+    "yes": "Yes",
+    "no": "No",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  }
+}

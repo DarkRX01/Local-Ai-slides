@@ -1,0 +1,37 @@
+{
+  "name": "slides-clone",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=packages/frontend & npm run dev --workspace=packages/backend",
+    "dev:frontend": "npm run dev --workspace=packages/frontend",
+    "dev:backend": "npm run dev --workspace=packages/backend",
+    "dev:electron": "npm run dev --workspace=packages/electron",
+    "electron": "npm run build --workspace=packages/electron && npm run start --workspace=packages/electron",
+    "build": "npm run build --workspaces --if-present",
+    "build:electron": "npm run build --workspaces --if-present && npm run build:electron --workspace=packages/electron",
+    "build:electron:win": "npm run build --workspaces --if-present && npm run build:win --workspace=packages/electron",
+    "build:electron:mac": "npm run build --workspaces --if-present && npm run build:mac --workspace=packages/electron",
+    "build:electron:linux": "npm run build --workspaces --if-present && npm run build:linux --workspace=packages/electron",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:frontend": "npm run test --workspace=packages/frontend",
+    "test:backend": "npm run test --workspace=packages/backend",
+    "test:coverage": "npm run test:coverage --workspaces --if-present",
+    "test:e2e": "npm run test:e2e --workspace=packages/frontend",
+    "setup:all": "node scripts/setup-all.js",
+    "clean": "npm run clean --workspaces --if-present && rimraf node_modules"
+  },
+  "devDependencies": {
+    "caniuse-lite": "^1.0.30001767",
+    "rimraf": "^5.0.5"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

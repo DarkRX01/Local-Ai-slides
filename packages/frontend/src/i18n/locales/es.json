@@ -1,0 +1,72 @@
+{
+  "app": {
+    "title": "Aplicación de Presentaciones",
+    "tagline": "Crea presentaciones increíbles con IA"
+  },
+  "menu": {
+    "file": "Archivo",
+    "edit": "Editar",
+    "view": "Ver",
+    "insert": "Insertar",
+    "tools": "Herramientas",
+    "help": "Ayuda"
+  },
+  "toolbar": {
+    "select": "Seleccionar",
+    "text": "Texto",
+    "image": "Imagen",
+    "shape": "Forma",
+    "draw": "Dibujar"
+  },
+  "editor": {
+    "undo": "Deshacer",
+    "redo": "Rehacer",
+    "copy": "Copiar",
+    "paste": "Pegar",
+    "delete": "Eliminar",
+    "duplicate": "Duplicar",
+    "zoom": "Zoom",
+    "grid": "Cuadrícula",
+    "guides": "Guías",
+    "snap": "Ajustar a cuadrícula"
+  },
+  "slide": {
+    "new": "Nueva diapositiva",
+    "duplicate": "Duplicar diapositiva",
+    "delete": "Eliminar diapositiva",
+    "reorder": "Reordenar diapositivas"
+  },
+  "ai": {
+    "generate": "Generar presentación",
+    "enhance": "Mejorar contenido",
+    "suggest": "Sugerir animaciones",
+    "prompt": "Describe tu presentación..."
+  },
+  "export": {
+    "title": "Exportar presentación",
+    "pdf": "Exportar como PDF",
+    "pptx": "Exportar como PowerPoint",
+    "html": "Exportar como HTML",
+    "video": "Exportar como Video"
+  },
+  "settings": {
+    "title": "Configuración",
+    "language": "Idioma",
+    "theme": "Tema",
+    "darkMode": "Modo oscuro",
+    "autoSave": "Guardado automático",
+    "gridSize": "Tamaño de cuadrícula",
+    "aiModel": "Modelo de IA"
+  },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "ok": "Aceptar",
+    "yes": "Sí",
+    "no": "No",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito"
+  }
+}

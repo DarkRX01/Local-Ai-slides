@@ -1,0 +1,72 @@
+{
+  "app": {
+    "title": "Präsentations-App",
+    "tagline": "Erstelle atemberaubende Präsentationen mit KI"
+  },
+  "menu": {
+    "file": "Datei",
+    "edit": "Bearbeiten",
+    "view": "Ansicht",
+    "insert": "Einfügen",
+    "tools": "Werkzeuge",
+    "help": "Hilfe"
+  },
+  "toolbar": {
+    "select": "Auswählen",
+    "text": "Text",
+    "image": "Bild",
+    "shape": "Form",
+    "draw": "Zeichnen"
+  },
+  "editor": {
+    "undo": "Rückgängig",
+    "redo": "Wiederholen",
+    "copy": "Kopieren",
+    "paste": "Einfügen",
+    "delete": "Löschen",
+    "duplicate": "Duplizieren",
+    "zoom": "Zoom",
+    "grid": "Raster",
+    "guides": "Hilfslinien",
+    "snap": "Am Raster ausrichten"
+  },
+  "slide": {
+    "new": "Neue Folie",
+    "duplicate": "Folie duplizieren",
+    "delete": "Folie löschen",
+    "reorder": "Folien neu anordnen"
+  },
+  "ai": {
+    "generate": "Präsentation generieren",
+    "enhance": "Inhalt verbessern",
+    "suggest": "Animationen vorschlagen",
+    "prompt": "Beschreiben Sie Ihre Präsentation..."
+  },
+  "export": {
+    "title": "Präsentation exportieren",
+    "pdf": "Als PDF exportieren",
+    "pptx": "Als PowerPoint exportieren",
+    "html": "Als HTML exportieren",
+    "video": "Als Video exportieren"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "language": "Sprache",
+    "theme": "Design",
+    "darkMode": "Dunkler Modus",
+    "autoSave": "Automatisch speichern",
+    "gridSize": "Rastergröße",
+    "aiModel": "KI-Modell"
+  },
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "close": "Schließen",
+    "ok": "OK",
+    "yes": "Ja",
+    "no": "Nein",
+    "loading": "Laden...",
+    "error": "Fehler",
+    "success": "Erfolg"
+  }
+}
